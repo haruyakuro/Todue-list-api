@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from model import ItemCreate, ItemUpdate
+from api import add_item as add_item_api, get_item as get_item_api, get_all_items as get_all_items_api, update_item as update_item_api
 
 app = FastAPI()
 
@@ -8,13 +10,21 @@ def read_root():
     return {"Hello": "World"}
 
 
+@app.get("/items/")
+def get_all_items():
+    return get_all_items_api()
+
+
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+def read_item(item_id: int):
+    return get_item_api(item_id)
+
+
+@app.post("/items/")
+def add_item(item: ItemCreate):
+    return add_item_api(item)
+
 
 @app.patch("/items/{item_id}")
-def patch_item(item_id:int,name:str,kind:str,date:str,score:int):
-    return '編集完了しました'
-@app.post("/items/")
-def add_item(name: str, kind: str, date: str, score: int):
-    return "取得完了"
+def patch_item(item_id: int, item: ItemUpdate):
+    return update_item_api(item_id, item)
