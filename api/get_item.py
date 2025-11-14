@@ -1,9 +1,9 @@
 from fastapi import HTTPException
-from supabase import supabase
+from db import supabase_client
 
 def get_item(item_id: int):
     try:
-        response = supabase.table("items").select("*").eq("id", item_id).execute()
+        response = supabase_client.table("items").select("*").eq("id", item_id).execute()
         
         if not response.data:
             raise HTTPException(status_code=404, detail="Item not found")

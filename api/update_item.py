@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from supabase import supabase
+from db import supabase_client
 from model import ItemUpdate
 
 def update_item(item_id: int, item: ItemUpdate):
@@ -9,7 +9,7 @@ def update_item(item_id: int, item: ItemUpdate):
         if not update_data:
             raise HTTPException(status_code=400, detail="No fields to update")
         
-        response = supabase.table("items").update(update_data).eq("id", item_id).execute()
+        response = supabase_client.table("items").update(update_data).eq("id", item_id).execute()
         
         if not response.data:
             raise HTTPException(status_code=404, detail="Item not found")

@@ -1,10 +1,10 @@
 from fastapi import HTTPException
-from supabase import supabase
+from db import supabase_client
 from model import ItemCreate
 
 def add_item(item: ItemCreate):
     try:
-        response = supabase.table("items").insert({
+        response = supabase_client.table("items").insert({
             "name": item.name,
             "kind": item.kind,
             "date": item.date,
